@@ -3,7 +3,7 @@
 - [ ] Use Heroku to deploy the application
 - [x] Use embedded database like H2 with enabled transaction and JPA/Hibernates
 - [ ] Use JUnit to test your code
-- [ ] Use GitHub to store the source code
+- [x] Use GitHub to store the source code
 - [x] The operations need to be logged
 - [ ] Your code must be easy to maintain/change(namings, design patterns, SOLID etc)
 - [ ] The API status code needs to follow the industry standard
