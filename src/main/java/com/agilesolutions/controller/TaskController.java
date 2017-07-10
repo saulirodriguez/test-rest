@@ -12,40 +12,41 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.agilesolutions.model.Task;
-import com.agilesolutions.repository.ToDoRepository;
+import com.agilesolutions.repository.TaskRepository;
 
 @RestController
 @RequestMapping("api/v1/to-do-list")
-public class ToDoListController {
+public class TaskController {
 	@Autowired
-	private ToDoRepository toDoRepository;
+	private TaskRepository taskRepository;
 
 	@RequestMapping(method = RequestMethod.GET)
 	public List<Task> findAll() {
-		return toDoRepository.findAll();
+		return taskRepository.findAll();
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public Task get(@PathVariable Long id) {
-		return toDoRepository.findOne(id);
+		return taskRepository.findOne(id);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	public Task create(@RequestBody Task task) {
-		return toDoRepository.saveAndFlush(task);
+		return taskRepository.saveAndFlush(task);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public Task update(@PathVariable Long id, @RequestBody Task newTask) {
-		Task taskToUpdate = toDoRepository.findOne(id);
-		BeanUtils.copyProperties(newTask, taskToUpdate); 
-		return toDoRepository.saveAndFlush(taskToUpdate);
+		Task taskToUpdate = taskRepository.findOne(id);
+		BeanUtils.copyProperties(taskToUpdate, newTask);
+
+		return taskRepository.saveAndFlush(taskToUpdate);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public Task remove(@PathVariable Long id) {
-		Task task = toDoRepository.findOne(id);
-		toDoRepository.delete(task);
-		return task;
+	public Long remove(@PathVariable Long id) {
+		Task task = taskRepository.findOne(id);
+		taskRepository.delete(task);
+		return id;
 	}
 }

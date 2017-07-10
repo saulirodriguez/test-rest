@@ -18,8 +18,14 @@ public class Task {
 	LocalDateTime createdAt;
 	
 	public Task() {
-		this.title = "Test";
-		this.text = "Text Test";
+		this.title = "";
+		this.text = "";
+		this.setCreatedAt(LocalDateTime.now());
+	}
+	
+	public Task(String title, String text) {
+		this.setTitle(title);
+		this.setText(text);
 		this.setCreatedAt(LocalDateTime.now());
 	}
 	

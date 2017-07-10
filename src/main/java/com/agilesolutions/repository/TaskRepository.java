@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.agilesolutions.model.Task;
 
-public interface ToDoRepository extends JpaRepository<Task, Long>{
+public interface TaskRepository extends JpaRepository<Task, Long>{
 
 }
