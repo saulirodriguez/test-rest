@@ -2,6 +2,7 @@ package com.agilesolutions.model;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,10 +12,12 @@ import javax.persistence.Id;
 public class Task {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private
 	Long id;
+	@Column(name = "TITLE")
 	String title;
+	@Column(name = "TEXT")
 	String text;
+	@Column(name = "CREATED_AT")
 	LocalDateTime createdAt;
 	
 	public Task() {

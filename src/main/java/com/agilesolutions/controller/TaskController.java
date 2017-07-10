@@ -15,7 +15,7 @@ import com.agilesolutions.model.Task;
 import com.agilesolutions.repository.TaskRepository;
 
 @RestController
-@RequestMapping("api/v1/to-do-list")
+@RequestMapping("api/v1/to-do-list/task")
 public class TaskController {
 	@Autowired
 	private TaskRepository taskRepository;
