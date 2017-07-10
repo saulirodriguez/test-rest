@@ -5,10 +5,12 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.junit.Before;
@@ -18,6 +20,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
+import org.springframework.http.HttpStatus;
 
 import com.agilesolutions.model.Task;
 import com.agilesolutions.repository.TaskRepository;
@@ -38,7 +41,7 @@ public class TaskControllerTest {
 		List<Task> mockTasks = new ArrayList<Task>();
 		when(taskRepository.findAll()).thenReturn(mockTasks);
 		
-		List<Task> resultTasks = taskCtrl.findAll();
+		List<Task> resultTasks = taskCtrl.findAll(new HashMap<String, String>()).getBody();
 		verify(taskRepository).findAll();
 		assertEquals(resultTasks.size(), 0);
 	}
@@ -49,7 +52,7 @@ public class TaskControllerTest {
 		mockTask.setId(1l);
 		when(taskRepository.findOne(1l)).thenReturn(mockTask);
 		
-		Task resultTask = taskCtrl.get(1l);
+		Task resultTask = taskCtrl.get(1l).getBody();
 		verify(taskRepository).findOne(1l);
 		assertEquals(1l, resultTask.getId().longValue());
 	}
@@ -76,7 +79,7 @@ public class TaskControllerTest {
         });
 
 		Task newTask = new Task(title, text);
-		Task resultTask = taskCtrl.create(newTask);
+		Task resultTask = taskCtrl.create(newTask).getBody();
 		verify(taskRepository).saveAndFlush(newTask);
 		
 		assertThat(resultTask, is(notNullValue()));
@@ -87,7 +90,6 @@ public class TaskControllerTest {
 	
 	@Test
 	public void update() {
-		List<Task> mockTasks = new ArrayList<Task>();
 		Task mockTask = new Task();
 		mockTask.setId(1l);
 		
@@ -109,7 +111,9 @@ public class TaskControllerTest {
             }
         });
 		
-		Task resultTask = taskCtrl.update(1l, new Task("Title", "Text"));
+		Task resultTask = taskCtrl.update(1l, new Task("Title", "Text")).getBody();
+		verify(taskRepository).saveAndFlush(mockTask);
+		verify(taskRepository).findOne(1l);
 		
 		assertThat(resultTask, is(notNullValue()));
 		assertEquals(1l, resultTask.getId().longValue());
@@ -123,24 +127,11 @@ public class TaskControllerTest {
 
 		mockTask.setId(1l);
 		when(taskRepository.findOne(1l)).thenReturn(mockTask);
-		when(taskRepository.saveAndFlush(any(Task.class))).thenAnswer(new Answer<Long>() {
-            @Override
-            public Long answer(InvocationOnMock invocation) throws Throwable {
-                Object[] arguments = invocation.getArguments();
-
-                if (arguments != null && arguments.length > 0 && arguments[0] != null) {
-                    Task task = (Task) arguments[0];
-                   
-                    return task.getId();
-                }
-
-                return null;
-            }
-        });
+		doNothing().when(taskRepository).delete(mockTask);
 		
-		Long resultId = taskCtrl.remove(1l);
-		
-		assertThat(resultId, is(notNullValue()));
-		assertEquals(1l, resultId.longValue());
+		HttpStatus statusCode = taskCtrl.remove(1l).getStatusCode();
+		verify(taskRepository).findOne(1l);
+		verify(taskRepository).delete(mockTask);
+		assertEquals(HttpStatus.NO_CONTENT, statusCode );
 	}
 }
