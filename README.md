@@ -20,8 +20,9 @@ Returns a Task with properties: id(Number), title(Text), text(Text), createdAt(D
 Status Code: 201
 
 Request Body:
-```{
-	"title": "Task 5",
+```
+{
+	"title": "Task",
 	"text": "Description task"
 }
 ```
@@ -34,8 +35,9 @@ Status Code: 200
 
 Request Body:
 
-```{
-	"title": "Task 5",
+```
+{
+	"title": "Task",
 	"text": "Description task"
 }
 ```
