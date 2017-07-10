@@ -1,15 +1,1 @@
 # test-rest
-- [x] When naming the resources, make sure you use spinal­case convention
-- [ ] Use Heroku to deploy the application
-- [x] Use embedded database like H2 with enabled transaction and JPA/Hibernates
-- [ ] Use JUnit to test your code
-- [ ] Use GitHub to store the source code
-- [x] The operations need to be logged
-- [ ] Your code must be easy to maintain/change(namings, design patterns, SOLID etc)
-- [ ] The API status code needs to follow the industry standard
-- [ ] There should be no 500 HTTP error, so all exceptions needs to be properly handled
-- [x] The usage of Spring Boot and Maven is a must
-- [ ] At least one method needs to leverage JAVA 8 Streams
-- [x] There is no need for User Interface
-- [ ] The application needs to be boostrapped with 5 items using an Entity Manager
-- [x] The operations insert, update and delete need to be persisted on the database
